@@ -1,7 +1,7 @@
 import { useState } from 'react';
+import css from './ContactForm.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { StyledBtn } from './ContactForm.styled';
-import { addContact } from 'redux/operations';
+import { addContact } from 'redux/contacts/operations';
 import { selectContacts } from 'redux/selectors';
 
 export const ContactForm = () => {
@@ -11,13 +11,13 @@ export const ContactForm = () => {
   const [contactName, setcontactName] = useState('');
   const [number, setNumber] = useState('');
 
-  const handleSubmit = evt => {
-    evt.preventDefault();
-
+  const handleSubmit = e => {
+    e.preventDefault();
     if (contacts.some(({ name }) => name === contactName)) {
       window.alert(`${contactName} is already in your contacts`);
       return;
     }
+
     dispatch(
       addContact({
         name: contactName,
@@ -29,8 +29,8 @@ export const ContactForm = () => {
     setNumber('');
   };
 
-  const handleChange = evt => {
-    const { value, name } = evt.target;
+  const handleChange = e => {
+    const { value, name } = e.target;
 
     switch (name) {
       case 'name':
@@ -46,10 +46,11 @@ export const ContactForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
+    <form onSubmit={handleSubmit} className={css.form}>
+      <label className={css.formLabel}>
         Name
         <input
+          className={css.formInput}
           type="text"
           name="name"
           value={contactName}
@@ -60,9 +61,10 @@ export const ContactForm = () => {
         />
       </label>
 
-      <label>
+      <label className={css.formLabel}>
         Number
         <input
+          className={css.formInput}
           type="tel"
           name="number"
           value={number}
@@ -73,7 +75,9 @@ export const ContactForm = () => {
         />
       </label>
 
-      <StyledBtn type="submit">Add contact</StyledBtn>
+      <button className={css.addContactBtn} type="submit">
+        Add contact
+      </button>
     </form>
   );
 };
